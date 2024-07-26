@@ -1,1 +1,3 @@
 nltk
+check50
+style50
