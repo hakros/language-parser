@@ -1,0 +1,11 @@
+python parser.py ./sentences/1.txt
+python parser.py ./sentences/2.txt
+python parser.py ./sentences/3.txt
+python parser.py ./sentences/4.txt
+python parser.py ./sentences/5.txt
+python parser.py ./sentences/6.txt
+python parser.py ./sentences/7.txt
+python parser.py ./sentences/8.txt
+python parser.py ./sentences/9.txt
+python parser.py ./sentences/10.txt
+check50 --local ai50/projects/2024/x/parser
