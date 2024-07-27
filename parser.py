@@ -15,9 +15,9 @@ V -> "smiled" | "tell" | "were"
 """
 
 NONTERMINALS = """
-S -> NP VP | VP NP | S Conj S
-NP -> N | Adj NP | Det NP | Det Adj NP | NP P NP
-VP -> V | Adv VP | VP NP | P VP
+S -> NP | NP VP | VP NP | NP VP NP | NP VP NP Adv | S Conj S
+NP -> N | Det N | Adj NP | Det Adj NP | NP P NP| P NP
+VP -> V | Adv VP | P VP | VP Adv
 """
 
 grammar = nltk.CFG.fromstring(NONTERMINALS + TERMINALS)
@@ -87,7 +87,41 @@ def np_chunk(tree):
     whose label is "NP" that does not itself contain any other
     noun phrases as subtrees.
     """
-    raise NotImplementedError
+    nounPhrases = []
+    queue: list = tree
+
+    while len(queue) > 0:
+        queue_item = queue.pop(0)
+
+        label = queue_item.label()
+
+        if label == 'VP' or label == 'Conj':
+            continue
+
+        npCounter = 0
+        for subtree in queue_item:
+            if type(subtree) is str:
+                continue
+
+            subtree_label = subtree.label()
+
+            if subtree_label != "NP":
+                continue
+
+            npCounter += 1
+
+        if npCounter < 1 and label == "NP":
+            nounPhrases.append(queue_item)
+        else:
+            for subtree in queue_item:
+                if type(subtree) is str:
+                    continue
+
+                queue.append(subtree)
+
+            
+
+    return nounPhrases
 
 
 if __name__ == "__main__":
