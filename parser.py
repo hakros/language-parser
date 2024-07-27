@@ -99,25 +99,23 @@ def np_chunk(tree):
             continue
 
         npCounter = 0
+        subtrees = []
+
         for subtree in queue_item:
             if type(subtree) is str:
                 continue
 
             subtree_label = subtree.label()
 
-            if subtree_label != "NP":
-                continue
+            if subtree_label == "NP":
+                npCounter += 1
 
-            npCounter += 1
+            subtrees.append(subtree)
 
         if npCounter < 1 and label == "NP":
             nounPhrases.append(queue_item)
         else:
-            for subtree in queue_item:
-                if type(subtree) is str:
-                    continue
-
-                queue.append(subtree)
+            queue.extend(subtrees)
 
             
 
