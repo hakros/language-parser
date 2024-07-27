@@ -15,9 +15,11 @@ V -> "smiled" | "tell" | "were"
 """
 
 NONTERMINALS = """
-S -> NP | NP VP | VP NP | NP VP NP | NP VP NP Adv | S Conj S
-NP -> N | Det N | Adj NP | Det Adj NP | NP P NP| P NP
-VP -> V | Adv VP | P VP | VP Adv
+S -> NP | NP VP | VP NP | NP VP NP | NP VP PP | NP VP NP Adv | NP VP PP Adv | S Conj S
+NP -> N | Det N | Det AVP N | AVP NP | NP PP | NP NP | NP Conj NP
+VP -> V | Adv VP | P VP | VP Adv | Adv VP NP | VP VP | VP Conj VP
+PP -> P NP
+AVP -> Adj | Adj AVP
 """
 
 grammar = nltk.CFG.fromstring(NONTERMINALS + TERMINALS)
@@ -95,7 +97,7 @@ def np_chunk(tree):
 
         label = queue_item.label()
 
-        if label == 'VP' or label == 'Conj':
+        if label == 'Conj':
             continue
 
         npCounter = 0
@@ -116,8 +118,6 @@ def np_chunk(tree):
             nounPhrases.append(queue_item)
         else:
             queue.extend(subtrees)
-
-            
 
     return nounPhrases
 
